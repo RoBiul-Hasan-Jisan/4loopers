@@ -1,5 +1,4 @@
-// src/data/fanFavourites.js
-export const movies = [
+export const featuredItems = [
   {
     id: 1,
     title: "Avengers: Endgame",

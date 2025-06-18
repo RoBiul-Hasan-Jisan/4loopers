@@ -1,5 +1,7 @@
-// src/data/fanFavourites.js
-export const movies = [
+// src/data/interests.js
+
+
+export const interests= [
   {
     id: 1,
     title: "Avengers: Endgame",

@@ -17,6 +17,7 @@ import Top10Trackflix from "../components/sections/Top10Trackflix";
 import FanFavorites from "../components/sections/FanFavorites";
 import PopularInterests from "../components/sections/PopularInterests";
 
+
 const Home = () => {
   const [current, setCurrent] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");

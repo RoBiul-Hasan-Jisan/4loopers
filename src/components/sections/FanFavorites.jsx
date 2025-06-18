@@ -63,7 +63,7 @@ const FanFavourites = () => {
       className="relative bg-gradient-to-b from-zinc-900 to-black text-white py-6"
       aria-label="Fan Favourites"
     >
-      {/* Section Heading with Icon & Arrow */}
+      {/* Heading */}
       <motion.h2
         className="text-xl sm:text-2xl md:text-3xl font-bold mb-6 flex items-center gap-2 text-left pl-6 group"
         initial={{ opacity: 0, y: -20 }}
@@ -77,7 +77,7 @@ const FanFavourites = () => {
         </span>
       </motion.h2>
 
-      {/* Navigation Buttons */}
+      {/* Scroll Buttons */}
       <button
         onClick={scrollLeft}
         aria-label="Scroll left"
@@ -93,10 +93,10 @@ const FanFavourites = () => {
         ▶
       </button>
 
-      {/* Card Container */}
+      {/* Cards */}
       <div
         ref={sliderRef}
-        className="flex gap-6 overflow-x-auto whitespace-nowrap scrollbar-hide px-6"
+        className="flex gap-4 sm:gap-6 overflow-x-auto scrollbar-hide px-4 sm:px-6"
         style={{ scrollBehavior: "smooth" }}
       >
         {fanFavorites.map((item, index) => {
@@ -110,8 +110,7 @@ const FanFavourites = () => {
               aria-pressed={isFlipped}
               onClick={() => setFlippedCard(isFlipped ? null : index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              className="relative flex-shrink-0"
-              style={{ width: "clamp(160px, 20vw, 220px)", height: "340px" }}
+              className="relative flex-shrink-0 w-[140px] sm:w-[180px] md:w-[200px] lg:w-[220px] h-[280px] sm:h-[300px] md:h-[340px]"
             >
               <motion.div
                 animate={{ rotateY: isFlipped ? 180 : 0 }}
@@ -123,7 +122,7 @@ const FanFavourites = () => {
               >
                 {/* Front Face */}
                 <div
-                  className="absolute w-full h-full rounded-lg overflow-hidden bg-zinc-800 flex flex-col justify-end"
+                  className="absolute w-full h-full rounded-lg overflow-hidden bg-zinc-800"
                   style={{
                     backfaceVisibility: "hidden",
                     WebkitBackfaceVisibility: "hidden",
@@ -134,12 +133,9 @@ const FanFavourites = () => {
                     alt={`Movie poster of ${item.title}`}
                     loading="lazy"
                     onError={(e) => (e.target.src = "/fallback.jpg")}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-t-lg"
                   />
-                  <div
-                    className="bg-black bg-opacity-70 text-white text-center py-2 text-sm px-2 whitespace-normal leading-tight"
-                    style={{ minHeight: "3rem" }}
-                  >
+                  <div className="absolute bottom-0 w-full bg-black bg-opacity-70 text-white text-center py-2 text-sm px-2">
                     {item.title}
                   </div>
                 </div>
@@ -176,8 +172,31 @@ const FanFavourites = () => {
           );
         })}
       </div>
+  {/* Get More Recommendations */}
+{/* Get More Recommendations Button */}
+<div className="mt-10 flex justify-center">
+  <button
+    onClick={() => {
+      // Example: navigation or modal trigger
+      // navigate("/recommendations");
+      console.log("Navigate to recommendations...");
+    }}
+    className="inline-flex items-center gap-2 px-6 py-3 border border-yellow-500 text-yellow-400 font-semibold rounded-full hover:bg-yellow-500 hover:text-black transition-all duration-300 group text-sm sm:text-base"
+  >
+    Get More Recommendations
+    <svg
+      className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+</div>
 
-      {/* Slide Indicators */}
+      {/* Dots */}
       <div className="flex justify-center mt-6 gap-3">
         {fanFavorites.map((_, idx) => (
           <button

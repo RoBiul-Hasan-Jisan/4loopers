@@ -1,54 +1,77 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Header({ isLoggedIn }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const activeClass = "text-yellow-400 font-bold";
+
   return (
     <header className="bg-gray-900 text-white px-6 py-4 shadow-lg fixed w-full z-40">
       <div className="max-w-screen-xl mx-auto flex justify-between items-center">
-        <Link
+        <NavLink
           to="/"
           className="text-yellow-400 font-extrabold text-2xl select-none"
           aria-label="TrackFlix Home"
+          onClick={() => setIsMenuOpen(false)}
         >
           TrackFlix
-        </Link>
+        </NavLink>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex space-x-8 items-center font-medium text-lg">
-          <Link to="/" className="hover:text-yellow-400 transition duration-200">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive ? activeClass : "hover:text-yellow-400 transition duration-200"
+            }
+          >
             Home
-          </Link>
-          <Link to="/movie" className="hover:text-yellow-400 transition duration-200">
-            Movie
-          </Link>
-          <Link to="/liveshow" className="hover:text-yellow-400 transition duration-200">
+          </NavLink>
+          <NavLink
+            to="/movies"
+            className={({ isActive }) =>
+              isActive ? activeClass : "hover:text-yellow-400 transition duration-200"
+            }
+          >
+            Movies
+          </NavLink>
+          <NavLink
+            to="/liveshow"
+            className={({ isActive }) =>
+              isActive ? activeClass : "hover:text-yellow-400 transition duration-200"
+            }
+          >
             Live Show
-          </Link>
+          </NavLink>
 
           {isLoggedIn ? (
-            <Link
+            <NavLink
               to="/dashboard"
               className="hover:text-yellow-400 transition duration-200 text-xl"
               aria-label="Dashboard"
+              onClick={() => setIsMenuOpen(false)}
             >
               👨
-            </Link>
+            </NavLink>
           ) : (
             <>
-              <Link
+              <NavLink
                 to="/login"
-                className="hover:text-yellow-400 transition duration-200"
+                className={({ isActive }) =>
+                  isActive ? activeClass : "hover:text-yellow-400 transition duration-200"
+                }
               >
                 Login
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 to="/signin"
-                className="hover:text-yellow-400 transition duration-200"
+                className={({ isActive }) =>
+                  isActive ? activeClass : "hover:text-yellow-400 transition duration-200"
+                }
               >
                 Sign In
-              </Link>
+              </NavLink>
             </>
           )}
         </nav>
@@ -61,7 +84,6 @@ function Header({ isLoggedIn }) {
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >
-            {/* Hamburger icon with animation */}
             <svg
               className={`w-8 h-8 transition-transform duration-300 ${
                 isMenuOpen ? "rotate-90" : "rotate-0"
@@ -88,31 +110,72 @@ function Header({ isLoggedIn }) {
           className="md:hidden mt-2 px-4 py-3 space-y-3 bg-gray-800 rounded-lg shadow-lg max-w-screen-xl mx-auto transition-opacity duration-300"
           aria-label="Mobile menu"
         >
-          <Link to="/" className="block hover:text-yellow-400 text-lg font-medium">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? "block text-yellow-400 font-bold text-lg"
+                : "block hover:text-yellow-400 text-lg font-medium"
+            }
+            onClick={() => setIsMenuOpen(false)}
+          >
             Home
-          </Link>
-          <Link to="/movie" className="block hover:text-yellow-400 text-lg font-medium">
-            Movie
-          </Link>
-          <Link to="/liveshow" className="block hover:text-yellow-400 text-lg font-medium">
+          </NavLink>
+          <NavLink
+            to="/movies"
+            className={({ isActive }) =>
+              isActive
+                ? "block text-yellow-400 font-bold text-lg"
+                : "block hover:text-yellow-400 text-lg font-medium"
+            }
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Movies
+          </NavLink>
+          <NavLink
+            to="/liveshow"
+            className={({ isActive }) =>
+              isActive
+                ? "block text-yellow-400 font-bold text-lg"
+                : "block hover:text-yellow-400 text-lg font-medium"
+            }
+            onClick={() => setIsMenuOpen(false)}
+          >
             Live Show
-          </Link>
+          </NavLink>
 
           {isLoggedIn ? (
-            <Link
+            <NavLink
               to="/dashboard"
               className="block hover:text-yellow-400 text-xl font-semibold"
+              onClick={() => setIsMenuOpen(false)}
             >
               👨 Dashboard
-            </Link>
+            </NavLink>
           ) : (
             <>
-              <Link to="/login" className="block hover:text-yellow-400 text-lg font-medium">
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  isActive
+                    ? "block text-yellow-400 font-bold text-lg"
+                    : "block hover:text-yellow-400 text-lg font-medium"
+                }
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Login
-              </Link>
-              <Link to="/signin" className="block hover:text-yellow-400 text-lg font-medium">
+              </NavLink>
+              <NavLink
+                to="/signin"
+                className={({ isActive }) =>
+                  isActive
+                    ? "block text-yellow-400 font-bold text-lg"
+                    : "block hover:text-yellow-400 text-lg font-medium"
+                }
+                onClick={() => setIsMenuOpen(false)}
+              >
                 Sign In
-              </Link>
+              </NavLink>
             </>
           )}
         </nav>

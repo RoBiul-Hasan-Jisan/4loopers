@@ -1,10 +1,10 @@
-function NotFound() {
-  return (
-    <div className="text-center py-20">
-      <h1 className="text-4xl font-bold">404</h1>
-      <p className="text-lg">Page Not Found</p>
-    </div>
-  );
-}
+import React from 'react';
+
+const NotFound = () => (
+  <section className="text-white text-center mt-20">
+    <h1 className="text-4xl font-bold mb-4">404 - Page Not Found</h1>
+    <p>The page you are looking for doesn’t exist.</p>
+  </section>
+);
 
 export default NotFound;

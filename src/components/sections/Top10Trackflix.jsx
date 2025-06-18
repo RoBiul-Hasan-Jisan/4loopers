@@ -1,131 +1,188 @@
-import React from "react";
+import React, { useRef } from "react";
+import { FaPlus, FaPlay, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { top10 } from "../../data/top10Movies";
 
-// Sample Top 10 data (replace with your real data)
-const top10 = [
-  {
-    id: 1,
-    title: "Avengers: Endgame",
-    img: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg",
-    rank: 1,
-  },
-  {
-    id: 2,
-    title: "Stranger Things",
-    img: "https://image.tmdb.org/t/p/w500/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg",
-    rank: 2,
-  },
-  {
-    id: 3,
-    title: "Wednesday",
-    img: "https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg",
-    rank: 3,
-  },
-  {
-    id: 5,
-    title: "Loki",
-    img: "https://image.tmdb.org/t/p/w500/voHUmluYmKyleFkTu3lOXQG702u.jpg",
-    rank: 4,
-  },
-  {
-    id: 8,
-    title: "Breaking Bad",
-    img: "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg",
-    rank: 5,
-  },
-  {
-    id: 9,
-    title: "Squid Game",
-    img: "https://image.tmdb.org/t/p/w500/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg",
-    rank: 6,
-  },
-  {
-    id: 10,
-    title: "Peaky Blinders",
-    img: "https://image.tmdb.org/t/p/w500/vUUqzWa2LnHIVqkaKVlVGkVcZIW.jpg",
-    rank: 7,
-  },
-  {
-    id: 11,
-    title: "Game of Thrones",
-    img: "https://image.tmdb.org/t/p/w500/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg",
-    rank: 8,
-  },
-  {
-    id: 12,
-    title: "The Mandalorian",
-    img: "https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg",
-    rank: 9,
-  },
-  {
-    id: 13,
-    title: "Dark",
-    img: "https://image.tmdb.org/t/p/w500/8yZAx7tlKRZIg7pJfaPhl00yHIQ.jpg",
-    rank: 10,
-  },
-];
+const Top10Trackflix = () => {
+  const scrollRef = useRef(null);
 
-const Top10Trackflix = () => (
-  <section
-    className="px-6 py-8 bg-gradient-to-b from-zinc-900 to-black text-white"
-    aria-label="Top 10 Trackflix This Week"
-  >
-    <h2 className="text-2xl md:text-3xl font-extrabold mb-6 flex items-center gap-3 select-none">
-      <span
-        role="img"
-        aria-label="Movie clapperboard"
-        className="text-yellow-400 text-3xl"
-      >
-        🎬
-      </span>
-      <span className="text-yellow-400 tracking-wide">
-        Top 10 on Trackflix This Week
-      </span>
-      <span
-        aria-hidden="true"
-        className="text-yellow-400 text-xl font-bold transform transition-transform duration-300 group-hover:translate-x-1"
-      >
-        &gt;
-      </span>
-    </h2>
+  // Function to scroll slider left/right by container width
+  const scroll = (direction) => {
+    if (!scrollRef.current) return;
+    const scrollAmount = scrollRef.current.offsetWidth;
+    scrollRef.current.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
+  };
 
-    <div
-      className="flex space-x-6 overflow-x-auto scrollbar-thin scrollbar-thumb-yellow-500 scrollbar-track-gray-700"
-      tabIndex={0}
-      aria-roledescription="carousel"
-      aria-label="Top 10 movies carousel"
+  return (
+    <section
+      aria-labelledby="top10-title"
+      className="bg-gradient-to-b from-zinc-900 to-black text-white px-4 sm:px-6 py-10 sm:py-14"
     >
-      {top10.map(({ id, img, title, rank }) => (
-        <article
-          key={id}
-          className="min-w-[150px] md:min-w-[180px] rounded-lg shadow-xl cursor-pointer hover:scale-105 transition-transform duration-300 relative focus:outline-yellow-400"
-          role="group"
-          aria-labelledby={`title-${id}`}
-          tabIndex={-1}
-        >
-          <img
-            src={img}
-            alt={`Poster of ${title}`}
-            loading="lazy"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = "/fallback.jpg";
-            }}
-            className="w-full h-44 md:h-52 object-cover rounded-t-lg"
-          />
-          <div className="absolute top-3 left-3 bg-red-600 px-3 py-1 rounded-full text-white font-bold text-sm shadow-lg select-none">
-            #{rank}
-          </div>
-          <h3
-            id={`title-${id}`}
-            className="bg-black bg-opacity-70 text-center text-sm md:text-base font-semibold py-2 rounded-b-lg truncate px-2"
-            title={title}
+      <div className="max-w-7xl mx-auto">
+        {/* Section header */}
+        <header className="text-center mb-8 sm:mb-10">
+          <h2
+            id="top10-title"
+            className="text-2xl sm:text-4xl font-extrabold text-yellow-400"
           >
-            {title}
-          </h3>
-        </article>
-      ))}
-    </div>
-  </section>
-);
+            🎬 Top 10 on Trackflix This Week
+          </h2>
+          <p className="mt-2 text-gray-400 text-sm sm:text-base max-w-xl mx-auto">
+            The hottest shows and movies everyone's watching
+          </p>
+        </header>
+
+        {/* Mobile slider with arrows */}
+        <div className="sm:hidden relative">
+          <button
+            aria-label="Scroll left"
+            onClick={() => scroll("left")}
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-zinc-800 bg-opacity-70 hover:bg-opacity-90 text-white rounded-full p-2 z-10"
+            type="button"
+          >
+            <FaChevronLeft />
+          </button>
+
+          <div
+            ref={scrollRef}
+            role="list"
+            tabIndex={0}
+            aria-label="Top 10 movies slider"
+            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-snap-x mandatory px-4"
+            style={{ scrollSnapType: "x mandatory" }}
+          >
+            {top10.map(({ id, img, title, rank, rating, year, trailer }) => (
+              <article
+                key={id}
+                role="listitem"
+                className="flex-none w-[70%] min-w-[220px] max-w-xs relative rounded-xl overflow-hidden bg-zinc-800 hover:shadow-xl transition-shadow duration-300 flex flex-col scroll-snap-align-start"
+              >
+                {/* Image */}
+                <div className="aspect-[2/3] bg-black overflow-hidden">
+                  <img
+                    src={img}
+                    alt={title}
+                    loading="lazy"
+                    className="object-cover w-full h-full"
+                    onError={(e) => (e.target.src = "/fallback.jpg")}
+                  />
+                </div>
+
+                {/* Info */}
+                <div className="p-3 flex flex-col flex-grow">
+                  <h3
+                    className="text-base font-semibold text-white mb-1 truncate"
+                    title={title}
+                  >
+                    {title}
+                  </h3>
+                  <div className="flex items-center justify-between text-xs text-gray-300 mb-2">
+                    <time>{year}</time>
+                    <span className="bg-yellow-400 text-black font-bold px-2 py-0.5 rounded">
+                      ⭐ {rating}
+                    </span>
+                  </div>
+                  <div className="flex gap-2 mt-auto text-xs">
+                    <a
+                      href={trailer}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 flex items-center justify-center gap-1 border border-white px-2 py-1 rounded hover:bg-white hover:text-black transition"
+                      aria-label={`Watch trailer for ${title}`}
+                    >
+                      <FaPlay className="text-xs" />
+                      Trailer
+                    </a>
+                    <button
+                      type="button"
+                      className="flex-1 flex items-center justify-center gap-1 border border-white px-2 py-1 rounded hover:bg-white hover:text-black transition"
+                      aria-label={`Add ${title} to watchlist`}
+                    >
+                      <FaPlus className="text-xs" />
+                      Watchlist
+                    </button>
+                  </div>
+                </div>
+
+                {/* Rank badge */}
+                <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow">
+                  #{rank}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <button
+            aria-label="Scroll right"
+            onClick={() => scroll("right")}
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-zinc-800 bg-opacity-70 hover:bg-opacity-90 text-white rounded-full p-2 z-10"
+            type="button"
+          >
+            <FaChevronRight />
+          </button>
+        </div>
+
+        {/* Grid for desktop/tablet */}
+        <div className="hidden sm:grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {top10.map(({ id, img, title, rank, rating, year, trailer }) => (
+            <article
+              key={id}
+              className="relative rounded-xl overflow-hidden bg-zinc-800 hover:shadow-2xl transition-shadow duration-300 flex flex-col"
+            >
+              <div className="w-full aspect-[2/3] bg-black overflow-hidden">
+                <img
+                  src={img}
+                  alt={title}
+                  loading="lazy"
+                  className="object-cover w-full h-full"
+                  onError={(e) => (e.target.src = "/fallback.jpg")}
+                />
+              </div>
+              <div className="p-4 flex flex-col flex-grow">
+                <h3
+                  className="text-lg font-semibold text-white mb-1 truncate"
+                  title={title}
+                >
+                  {title}
+                </h3>
+                <div className="flex items-center justify-between text-sm text-gray-300 mb-3">
+                  <time dateTime={`${year}`}>{year}</time>
+                  <span className="bg-yellow-400 text-black font-bold px-2 py-0.5 rounded">
+                    ⭐ {rating}
+                  </span>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2 mt-auto text-sm">
+                  <a
+                    href={trailer}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 border border-white px-3 py-1 rounded hover:bg-white hover:text-black transition"
+                    aria-label={`Watch trailer for ${title}`}
+                  >
+                    <FaPlay className="text-xs" />
+                    Trailer
+                  </a>
+                  <button
+                    type="button"
+                    className="flex items-center justify-center gap-2 border border-white px-3 py-1 rounded hover:bg-white hover:text-black transition"
+                    aria-label={`Add ${title} to watchlist`}
+                  >
+                    <FaPlus className="text-xs" />
+                    Watchlist
+                  </button>
+                </div>
+              </div>
+              <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow">
+                #{rank}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default Top10Trackflix;
