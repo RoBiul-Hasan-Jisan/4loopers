@@ -42,7 +42,7 @@ function Header({ isLoggedIn }) {
               isActive ? activeClass : "hover:text-yellow-400 transition duration-200"
             }
           >
-            Live Show
+            Tv Show
           </NavLink>
 
           {isLoggedIn ? (
