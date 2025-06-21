@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import * as FaIcons from "react-icons/fa";
-
 import { genres } from "../../data/footernewtomovies";
 
 const ICON_COLOR_CLASSES = {
@@ -33,12 +32,11 @@ const itemVariants = {
 };
 
 const titleVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.9, color: "#444" },
+  hidden: { opacity: 0, y: 30, scale: 0.9 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    color: "#111",
     transition: { duration: 1, ease: "easeOut" },
   },
 };
@@ -67,8 +65,6 @@ const AnimatedGenreSection = ({ genre }) => {
   const controls = useAnimation();
   const [ref, inView] = useInView({ threshold: 0.5, triggerOnce: true });
   const [bgLoaded, setBgLoaded] = useState(false);
-  const sectionRef = useRef(null);
-  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     if (inView) {
@@ -77,65 +73,26 @@ const AnimatedGenreSection = ({ genre }) => {
     }
   }, [controls, inView]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!sectionRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      setScrollY(-rect.top);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const IconComponent = FaIcons[genre.iconName];
-
-  // Parallax speed factors for layers
-  const speedBg = 0.3; // Background image slower
-  const speedGradient = 0.6; // Gradient layer medium speed
+  const titleId = `${genre.title.toLowerCase().replace(/\s+/g, "-")}-title`;
 
   return (
     <section
-      ref={(node) => {
-        ref(node);
-        sectionRef.current = node;
+      ref={ref}
+      className="snap-start relative w-screen h-screen flex flex-col items-center justify-center px-6 sm:px-12 md:px-20 lg:px-32 text-center"
+      style={{
+        backgroundAttachment: "fixed",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundImage: bgLoaded
+          ? `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.6)), url(${genre.bgImage})`
+          : "none",
+        transition: "background-image 1.5s ease-in-out",
       }}
-      className="snap-start relative w-screen h-screen flex flex-col items-center justify-center px-6 sm:px-12 md:px-20 lg:px-32 text-center overflow-hidden"
-      aria-labelledby={`${genre.title.toLowerCase().replace(/\s+/g, "-")}-title`}
+      aria-labelledby={titleId}
     >
-      {/* Background Image Layer */}
-      {bgLoaded && (
-        <>
-          <div
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: `url(${genre.bgImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "brightness(0.6)",
-              transform: `translateY(${scrollY * speedBg}px)`,
-              transition: "transform 0.1s linear",
-              zIndex: 0,
-            }}
-          />
-          {/* Gradient Overlay Layer */}
-          <div
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7))",
-              transform: `translateY(${scrollY * speedGradient}px)`,
-              transition: "transform 0.1s linear",
-              zIndex: 1,
-            }}
-          />
-        </>
-      )}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70 pointer-events-none"></div>
 
-      {/* Content */}
       <motion.div
         aria-hidden="true"
         variants={iconPulseVariants}
@@ -149,7 +106,7 @@ const AnimatedGenreSection = ({ genre }) => {
       </motion.div>
 
       <motion.h2
-        id={`${genre.title.toLowerCase().replace(/\s+/g, "-")}-title`}
+        id={titleId}
         variants={titleVariants}
         initial="hidden"
         animate={controls}
@@ -171,14 +128,14 @@ const AnimatedGenreSection = ({ genre }) => {
         variants={containerVariants}
         initial="hidden"
         animate={controls}
-        className="relative z-10 mt-10 max-w-xl mx-auto text-white text-lg sm:text-xl space-y-5 list-none list-inside leading-relaxed drop-shadow-md"
+        className="relative z-10 mt-10 max-w-xl mx-auto text-white text-lg sm:text-xl space-y-5 list-none leading-relaxed drop-shadow-md"
       >
         {genre.lines.map((line, i) => (
           <motion.li
             key={i}
             variants={itemVariants}
-            className="select-text"
             transition={{ delay: i * 0.1 }}
+            className="select-text"
           >
             {line}
           </motion.li>
