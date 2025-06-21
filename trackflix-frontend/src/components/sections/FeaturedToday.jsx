@@ -1,94 +1,25 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaArrowRight, FaPlay, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaPlay,
+  FaChevronLeft,
+  FaChevronRight,
+  FaPlus,
+} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import FlipCard from "../sectionExtra/FlipCard";
 
 const ITEM_WIDTH = 256;
 const GAP = 24;
-
-const FlipCard = ({ item, isFlipped, onFlip }) => {
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      onFlip(item.id);
-    }
-  };
-
-  return (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-pressed={isFlipped}
-      onClick={() => onFlip(item.id)}
-      onKeyDown={handleKeyDown}
-      className="w-64 h-96 relative cursor-pointer perspective flex-shrink-0"
-      style={{ perspective: "1000px" }}
-    >
-      <div
-        className="w-full h-full rounded-xl shadow-lg transition-transform duration-700"
-        style={{
-          transformStyle: "preserve-3d",
-          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
-          position: "relative",
-        }}
-      >
-        {/* Front */}
-        <div
-          className="absolute w-full h-full rounded-xl overflow-hidden"
-          style={{
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-          }}
-        >
-          <img
-            src={item.img}
-            alt={item.title}
-            className="w-full h-full object-cover"
-            loading="lazy"
-            onError={(e) => (e.target.src = "/fallback.jpg")}
-          />
-        </div>
-
-        {/* Back */}
-        <div
-          className="absolute w-full h-full bg-zinc-800 text-white rounded-xl p-4 flex flex-col justify-center items-center shadow-xl"
-          style={{
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
-          }}
-        >
-          <h3 className="text-lg font-bold mb-2 text-center">{item.title}</h3>
-          <p className="text-sm text-gray-300 mb-1">⭐ {item.rating}</p>
-          <p className="text-sm text-gray-300 mb-2">{item.genres.join(", ")}</p>
-          <a
-            href={item.trailerLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 mb-2 rounded-full text-sm flex items-center gap-2 transition"
-          >
-            <FaPlay /> Watch Trailer
-          </a>
-          <button
-            type="button"
-            className="bg-white hover:bg-gray-200 text-black px-4 py-2 rounded-full text-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              alert(`Added "${item.title}" to your watchlist!`);
-            }}
-          >
-            Add to Watchlist
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const FeaturedToday = () => {
   const [flippedCard, setFlippedCard] = useState(null);
   const [featuredItems, setFeaturedItems] = useState([]);
   const sliderRef = useRef(null);
   const navigate = useNavigate();
+
+  // MOCK: Replace this with your real authentication logic/context
+  const isLoggedIn = false; // For demo, false means user not logged in
 
   const handleFlip = (id) => {
     setFlippedCard((prev) => (prev === id ? null : id));
@@ -103,7 +34,6 @@ const FeaturedToday = () => {
   const scrollLeft = () => scrollByOffset(-(ITEM_WIDTH + GAP));
   const scrollRight = () => scrollByOffset(ITEM_WIDTH + GAP);
 
-  // Fetch data from backend
   useEffect(() => {
     fetch("http://localhost:5000/featured-today")
       .then((res) => res.json())
@@ -111,7 +41,7 @@ const FeaturedToday = () => {
       .catch((err) => console.error("Failed to fetch featured items:", err));
   }, []);
 
-  // Touch support
+  // Touch swipe support
   useEffect(() => {
     const slider = sliderRef.current;
     if (!slider) return;
@@ -181,6 +111,7 @@ const FeaturedToday = () => {
                   item={item}
                   isFlipped={flippedCard === item.id}
                   onFlip={handleFlip}
+                  isLoggedIn={isLoggedIn}
                 />
               </div>
             ))}

@@ -1,10 +1,23 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
-function Header({ isLoggedIn }) {
+function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [currentUserEmail, setCurrentUserEmail] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const navigate = useNavigate();
 
   const activeClass = "text-yellow-400 font-bold";
+
+  useEffect(() => {
+    // Simulate user auth via localStorage
+    const email = localStorage.getItem("adminEmail");
+    const adminFlag = localStorage.getItem("isAdmin") === "true";
+    if (email) {
+      setCurrentUserEmail(email);
+      setIsAdmin(adminFlag);
+    }
+  }, []);
 
   return (
     <header className="bg-gray-900 text-white px-6 py-4 shadow-lg fixed w-full z-40">
@@ -45,15 +58,18 @@ function Header({ isLoggedIn }) {
             Tv Show
           </NavLink>
 
-          {isLoggedIn ? (
-            <NavLink
-              to="/dashboard"
-              className="hover:text-yellow-400 transition duration-200 text-xl"
-              aria-label="Dashboard"
-              onClick={() => setIsMenuOpen(false)}
+          {currentUserEmail ? (
+            <div
+              onClick={() => {
+                setIsMenuOpen(false);
+                navigate(isAdmin ? "/admin-dashboard" : "/dashboard");
+              }}
+              className="cursor-pointer hover:text-yellow-400 transition duration-200 text-xl"
+              title={`Logged in as ${currentUserEmail}`}
+              aria-label="User Profile or Admin Dashboard"
             >
               👨
-            </NavLink>
+            </div>
           ) : (
             <>
               <NavLink
@@ -144,14 +160,18 @@ function Header({ isLoggedIn }) {
             Live Show
           </NavLink>
 
-          {isLoggedIn ? (
-            <NavLink
-              to="/dashboard"
-              className="block hover:text-yellow-400 text-xl font-semibold"
-              onClick={() => setIsMenuOpen(false)}
+          {currentUserEmail ? (
+            <div
+              onClick={() => {
+                setIsMenuOpen(false);
+                navigate(isAdmin ? "/admin-dashboard" : "/dashboard");
+              }}
+              className="block hover:text-yellow-400 text-xl font-semibold cursor-pointer"
+              aria-label="User Profile or Admin Dashboard"
+              title={`Logged in as ${currentUserEmail}`}
             >
-              👨 Dashboard
-            </NavLink>
+              👨 {isAdmin ? "Admin Dashboard" : "Dashboard"}
+            </div>
           ) : (
             <>
               <NavLink
